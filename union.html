@@ -1,0 +1,80 @@
+<script>
+
+var A, E;
+
+var edge;
+
+class Edge
+{
+	constructor()
+	{
+		this.src = 0;
+		this.dest = 0;
+	}
+};
+
+function initialize(v,e)
+{
+	A = v;
+	E = e;
+	edge = Array.from(Array(E), () => Array());
+}
+
+function find(parent, i)
+{
+	if (parent[i] == -1)
+		return i;
+		
+	return find(parent,
+				parent[i]);
+}
+
+function Union(parent, x, y)
+{
+	parent[x] = y;
+}
+
+function isCycle()
+{
+
+	var parent = Array(A).fill(0);
+	
+	for(var i = 0; i < A; ++i)
+		parent[i] =- 1;
+		
+	for (var i = 0; i < E; ++i)
+	{
+		var x = find(parent,
+					edge[i].src);
+		var y = find(parent,
+					edge[i].dest);
+		
+		if (x == y)
+			return 1;
+		
+		Union(parent, x, y);
+	}
+	return 0;
+}
+
+var A = 3, E = 3;
+initialize(A, E);
+
+// Add edge 0-1
+edge[0].src = 0;
+edge[0].dest = 1;
+
+// Add edge 1-2
+edge[1].src = 1;
+edge[1].dest = 2;
+
+// Add edge 0-2
+edge[2].src = 0;
+edge[2].dest = 2;
+
+if (isCycle() == 1)
+	document.write("graph contains cycle");
+else
+	document.write("graph doesn't contain cycle");
+
+</script>
